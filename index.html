@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Evolving Role of AI: Generative, Agentic, and Beyond</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/main.js" defer></script>
+</head>
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+      color: #333;
+      background: #fafafa;
+      padding-top: 80px;
+      scroll-behavior: smooth;
+    }
+
+    .sticky-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #343a40;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .progress-container {
+      width: 100%;
+      height: 4px;
+      background: #2c3e50;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1001;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: #3c9fc3;
+      width: 0%;
+      transition: width 0.2s ease-out;
+    }
+
+    .sticky-header .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .theme-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5em;
+      margin-left: 1em;
+    }
+
+    .theme-toggle img {
+      width: 24px;
+      height: 24px;
+      filter: invert(1);
+    }
+
+    /* Dark mode styles */
+    body.dark-mode {
+      background: #121212;
+      color: #e0e0e0;
+    }
+
+    .dark-mode .toc {
+      background: #1e1e1e;
+      color: #e0e0e0;
+    }
+
+    .dark-mode .toc a {
+      color: #e0e0e0;
+    }
+
+    .dark-mode .toc a:hover {
+      color: #3c9fc3;
+    }
+
+    .dark-mode main {
+      background: #1e1e1e;
+      box-shadow: 0 2px 4px rgba(255,255,255,0.1);
+    }
+
+    .dark-mode h2,
+    .dark-mode h3 {
+      color: #3c9fc3;
+    }
+
+    .sticky-header h1 {
+      margin: 0;
+      font-size: 1.5em;
+    }
+
+    .sticky-header nav {
+      background: transparent;
+      padding: 0;
+    }
+
+    .sticky-header nav a {
+      margin: 0 0.8em;
+      font-size: 0.9em;
+      color: #fff;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .sticky-header nav a:hover {
+      opacity: 0.8;
+    }
+
+    .toc {
+      position: fixed;
+      left: 20px;
+      top: 120px;
+      width: 250px;
+      background: #fff;
+      padding: 1.5em;
+      border-radius: 6px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      max-height: calc(100vh - 140px);
+      overflow-y: auto;
+      z-index: 999;
+    }
+
+    @media (max-width: 1200px) {
+      .toc {
+        position: static;
+        width: 100%;
+        max-height: none;
+        margin: 2em 0;
+      }
+    }
+
+    .toc h3 {
+      margin-top: 0;
+      color: #3c9fc3;
+    }
+
+    .toc ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .toc li {
+      margin: 0.5em 0;
+    }
+
+    .toc a {
+      color: #333;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .toc a:hover {
+      color: #3c9fc3;
+      transform: translateX(5px);
+      transition: all 0.2s ease;
+    }
+
+    header, footer {
+      background: #343a40;
+      color: #fff;
+      text-align: center;
+      padding: 2em 0;
+    }
+
+    nav {
+      background: #3c9fc3;
+      padding: 1em;
+      text-align: center;
+    }
+    
+    nav a {
+      color: #fff;
+      margin: 0 1em;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 2em auto;
+      padding: 0 1em;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    section {
+      padding: 2em 2em 0 2em;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 0;
+      padding-top: 1em;
+      font-size: 2em;
+    }
+    
+    h2, h3 {
+      color: #3c9fc3;
+    }
+
+    p {
+      margin-bottom: 1.2em;
+    }
+    
+    .divider {
+      height: 2px;
+      background: #3c9fc3;
+      margin: 2em 0;
+      opacity: 0.6;
+    }
+    
+    footer {
+      page-break-before: always;
+      margin-top: 2cm;
+      padding: 1cm 0;
+      border-top: 1px solid #000;
+      text-align: center;
+      font-size: 10pt;
+      color: #666;
+    }
+
+    footer p {
+      margin: 0.5em 0;
+    }
+
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #3c9fc3;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      background: #2c3e50;
+    }
+
+    /* Print styles */
+    @media print {
+      .sticky-header,
+      .toc,
+      .progress-container,
+      .back-to-top,
+      .theme-toggle,
+      .print-button,
+      .print-preview-button {
+        display: none;
+      }
+
+      @page {
+        margin: 2cm 1.5cm;
+        size: A4;
+      }
+
+      .print-header {
+        display: block;
+        text-align: center;
+        margin-bottom: 3cm;
+        padding: 2cm 0 1.5cm 0;
+        border-bottom: 2px solid #000;
+        page-break-after: avoid;
+      }
+
+      .print-header h1 {
+        font-size: 32pt;
+        margin: 0 0 0.75em 0;
+        font-weight: bold;
+        line-height: 1.1;
+        letter-spacing: -0.5px;
+        text-transform: uppercase;
+      }
+
+      .print-header .subtitle {
+        font-size: 20pt;
+        color: #444;
+        margin: 0.5em 0 1em 0;
+        font-weight: 300;
+        line-height: 1.3;
+      }
+
+      .print-header .author {
+        font-size: 16pt;
+        margin: 1.5em 0 0.25em 0;
+        font-weight: bold;
+        text-transform: uppercase;
+      }
+
+      .print-header .date {
+        font-size: 14pt;
+        color: #666;
+        margin: 0.25em 0 0 0;
+        font-weight: 300;
+      }
+
+      .print-header .institution {
+        font-size: 12pt;
+        color: #666;
+        margin: 2em 0 0 0;
+        font-style: italic;
+      }
+
+      /* Page breaks and spacing */
+      h2 {
+        page-break-before: always;
+        padding-top: 1.5cm;
+        margin-bottom: 1cm;
+        font-size: 22pt;
+      }
+
+      h3 {
+        font-size: 18pt;
+        margin-top: 1.5em;
+        margin-bottom: 0.75em;
+      }
+
+      section {
+        page-break-inside: avoid;
+        margin-bottom: 1.5cm;
+      }
+
+      ul, ol {
+        margin-left: 1.5cm;
+        margin-bottom: 1em;
+        counter-reset: list-item;
+      }
+
+      li {
+        margin-bottom: 0.5em;
+        position: relative;
+      }
+
+      li::before {
+        content: counters(list-item, ".") ".";
+        counter-increment: list-item;
+        position: absolute;
+        left: -1.5cm;
+        width: 1.5cm;
+        text-align: right;
+        padding-right: 0.5em;
+        color: #3c9fc3;
+        font-weight: bold;
+      }
+
+      li li::before {
+        content: counters(list-item, ".") " ";
+      }
+
+      p {
+        text-align: justify;
+        margin-bottom: 1em;
+        line-height: 1.6;
+        text-indent: 1.5em;
+      }
+
+      p:first-of-type {
+        text-indent: 0;
+      }
+
+      blockquote {
+        margin: 1.5em 2cm;
+        padding: 1em 1.5em;
+        border-left: 4px solid #3c9fc3;
+        background: #f5f5f5;
+        font-style: italic;
+        page-break-inside: avoid;
+      }
+
+      blockquote p {
+        margin: 0.5em 0;
+        text-indent: 0;
+        font-size: 11pt;
+        line-height: 1.6;
+        color: #444;
+      }
+
+      blockquote footer {
+        margin-top: 1em;
+        text-align: right;
+        font-size: 10pt;
+        color: #666;
+      }
+
+      blockquote footer::before {
+        content: "— ";
+      }
+
+      .quote-wrapper {
+        margin: 1.5em 0;
+        page-break-inside: avoid;
+      }
+
+      .quote-wrapper blockquote {
+        margin: 0;
+      }
+
+      .quote-wrapper + p {
+        margin-top: 1.5em;
+      }
+
+      .quote-wrapper .citation {
+        font-style: italic;
+        text-align: right;
+        margin-top: 0.5em;
+        color: #666;
+        font-size: 0.9em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .citation {
+        font-style: italic;
+        color: #666;
+        font-size: 0.9em;
+        margin-top: 0.5em;
+      }
+
+      .citation::before {
+        content: "(";
+      }
+
+      .citation::after {
+        content: ")";
+      }
+
+      /* Print footer with title and page numbers */
+      @page {
+        @bottom-center {
+          content: "The Evolving Role of AI - Page " counter(page);
+          font-size: 10pt;
+          color: #666;
+          font-family: Arial, sans-serif;
+          margin-bottom: 1cm;
+          border-top: 1px solid #ccc;
+          padding-top: 0.5cm;
+        }
+      }
+
+      /* Print footer for first page */
+      @page :first {
+        @bottom-center {
+          content: none;
+        }
+      }
+
+      /* Print footer for left pages */
+      @page :left {
+        @bottom-center {
+          content: "The Evolving Role of AI - Page " counter(page);
+          text-align: left;
+          margin-left: 2cm;
+        }
+      }
+
+      /* Print footer for right pages */
+      @page :right {
+        @bottom-center {
+          content: "The Evolving Role of AI - Page " counter(page);
+          text-align: right;
+          margin-right: 2cm;
+        }
+      }
+
+      body {
+        background: #fff !important;
+        color: #000 !important;
+        padding-top: 0;
+        counter-reset: page;
+        font-size: 12pt;
+        line-height: 1.6;
+      }
+
+      main {
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
+        max-width: 100%;
+      }
+
+      section {
+        opacity: 1 !important;
+        transform: none !important;
+        page-break-inside: avoid;
+      }
+
+      h1, h2, h3 {
+        color: #000 !important;
+        page-break-after: avoid;
+      }
+
+      .divider {
+        background: #000;
+        margin: 1.5cm 0;
+      }
+
+      a {
+        color: #000 !important;
+        text-decoration: underline;
+      }
+
+      a::after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+        font-weight: normal;
+      }
+
+      /* Table of contents for print */
+      .print-toc {
+        display: block;
+        page-break-before: always;
+        margin-bottom: 2.5cm;
+        border-bottom: 2px solid #000;
+        padding-bottom: 1.5cm;
+      }
+
+      .print-toc h2 {
+        font-size: 24pt;
+        margin-bottom: 1.5cm;
+        text-align: center;
+        font-weight: bold;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 0.75cm;
+        counter-reset: section;
+      }
+
+      .print-toc ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 0 2cm;
+        column-count: 2;
+        column-gap: 2cm;
+      }
+
+      .print-toc li {
+        margin: 0.75em 0;
+        font-size: 14pt;
+        line-height: 1.4;
+        break-inside: avoid;
+      }
+
+      .print-toc li::before {
+        content: counters(section, ".") ".";
+        counter-increment: section;
+        font-weight: bold;
+        margin-right: 0.5em;
+        color: #3c9fc3;
+      }
+
+      .print-toc a {
+        text-decoration: none;
+        color: #000;
+        display: block;
+      }
+
+      .print-toc a::after {
+        content: " (Page " target-counter(attr(href), page) ")";
+        font-size: 12pt;
+        color: #666;
+        margin-left: 0.5em;
+        float: right;
+      }
+
+      .print-toc .toc-section {
+        font-weight: bold;
+        margin-top: 1em;
+        font-size: 16pt;
+        color: #3c9fc3;
+      }
+
+      /* Code blocks with line numbers */
+      pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        background: #f5f5f5;
+        padding: 1em;
+        border: 1px solid #ddd;
+        margin: 1em 0;
+        page-break-inside: avoid;
+        position: relative;
+        counter-reset: line;
+        font-family: Consolas, Monaco, 'Andale Mono', monospace;
+        font-size: 11pt;
+        line-height: 1.4;
+      }
+
+      pre code {
+        display: block;
+        padding-left: 3.5em;
+      }
+
+      pre code .line-number {
+        position: absolute;
+        left: 0;
+        width: 3em;
+        padding-right: 0.5em;
+        text-align: right;
+        color: #666;
+        border-right: 1px solid #ddd;
+        counter-increment: line;
+        font-size: 10pt;
+      }
+
+      pre code .line-number::before {
+        content: counter(line);
+        font-weight: bold;
+      }
+
+      .code-block {
+        margin: 1.5em 0;
+        page-break-inside: avoid;
+      }
+
+      .code-block + p {
+        margin-top: 1.5em;
+      }
+
+      .code-block pre {
+        margin: 0;
+      }
+
+      .code-block .caption {
+        font-style: italic;
+        text-align: left;
+        margin-bottom: 0.5em;
+        color: #666;
+        font-size: 0.9em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-bottom: none;
+      }
+
+      .code-block .footnote {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .code-block .source {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .code-block .print-note {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .code-block .print-notes {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      /* Images and figures with improved layout */
+      img {
+        max-width: 100%;
+        height: auto;
+        page-break-inside: avoid;
+        display: block;
+        margin: 1.5em auto;
+        border: 1px solid #ddd;
+        padding: 0.5em;
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      figure {
+        margin: 1.5em 0;
+        page-break-inside: avoid;
+        text-align: center;
+        border: 1px solid #ddd;
+        padding: 1em;
+        background: #f5f5f5;
+      }
+
+      figcaption {
+        font-style: italic;
+        text-align: center;
+        margin: 0.5em 0 1.5em 0;
+        font-size: 0.9em;
+        color: #666;
+        padding: 0.5em;
+        background: #fff;
+        border-top: 1px solid #ddd;
+      }
+
+      .figure-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1em;
+        margin: 1.5em 0;
+        page-break-inside: avoid;
+      }
+
+      .figure-group figure {
+        flex: 1 1 45%;
+        margin: 0;
+      }
+
+      .figure-group figcaption {
+        margin-bottom: 0;
+      }
+
+      .image-wrapper {
+        margin: 1.5em 0;
+        page-break-inside: avoid;
+      }
+
+      .image-wrapper img {
+        margin: 0;
+      }
+
+      .image-wrapper + p {
+        margin-top: 1.5em;
+      }
+
+      .image-wrapper .caption {
+        font-style: italic;
+        text-align: left;
+        margin-bottom: 0.5em;
+        color: #666;
+        font-size: 0.9em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-bottom: none;
+      }
+
+      .image-wrapper .footnote {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .image-wrapper .print-note {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .image-wrapper .print-instructions {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .image-wrapper .print-notes {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .image-wrapper .print-notes {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      /* Tables */
+      table {
+        width: 100%;
+        margin: 1.5em 0;
+        border-collapse: collapse;
+        page-break-inside: avoid;
+        border: 1px solid #ddd;
+        font-size: 11pt;
+      }
+
+      th, td {
+        padding: 0.75em;
+        border: 1px solid #ddd;
+        text-align: left;
+        line-height: 1.4;
+        page-break-inside: avoid;
+      }
+
+      th {
+        background: #f5f5f5;
+        font-weight: bold;
+        color: #3c9fc3;
+        border-bottom: 2px solid #3c9fc3;
+        font-size: 12pt;
+      }
+
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+
+      caption {
+        font-style: italic;
+        text-align: left;
+        margin-bottom: 1em;
+        color: #666;
+        font-size: 0.9em;
+        caption-side: top;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-bottom: none;
+      }
+
+      .table-wrapper {
+        page-break-inside: avoid;
+        margin: 1.5em 0;
+      }
+
+      .table-wrapper table {
+        margin: 0;
+      }
+
+      .table-wrapper + p {
+        margin-top: 1.5em;
+      }
+
+      .table-wrapper .caption {
+        font-style: italic;
+        text-align: left;
+        margin-bottom: 0.5em;
+        color: #666;
+        font-size: 0.9em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-bottom: none;
+      }
+
+      .table-wrapper .footnote {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .table-wrapper .source {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .table-wrapper .print-note {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .table-wrapper .print-instructions {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .table-wrapper .print-notes {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .table-wrapper .print-notes {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .table-wrapper .print-notes {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      /* Code blocks */
+      pre {
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        background: #f5f5f5;
+        padding: 1em;
+        border: 1px solid #ddd;
+        margin: 1.5em 0;
+        page-break-inside: avoid;
+        position: relative;
+        counter-reset: line;
+        font-family: Consolas, Monaco, 'Andale Mono', monospace;
+        font-size: 11pt;
+        line-height: 1.4;
+      }
+
+      pre code {
+        display: block;
+        padding-left: 3.5em;
+      }
+
+      pre code .line-number {
+        position: absolute;
+        left: 0;
+        width: 3em;
+        padding-right: 0.5em;
+        text-align: right;
+        color: #666;
+        border-right: 1px solid #ddd;
+        counter-increment: line;
+        font-size: 10pt;
+      }
+
+      pre code .line-number::before {
+        content: counter(line);
+        font-weight: bold;
+      }
+
+      .code-block {
+        margin: 1.5em 0;
+        page-break-inside: avoid;
+      }
+
+      .code-block + p {
+        margin-top: 1.5em;
+      }
+
+      .code-block pre {
+        margin: 0;
+      }
+
+      .code-block .caption {
+        font-style: italic;
+        text-align: left;
+        margin-bottom: 0.5em;
+        color: #666;
+        font-size: 0.9em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-bottom: none;
+      }
+
+      .code-block .footnote {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .code-block .source {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .code-block .print-notes {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      /* Footnotes */
+      .footnote {
+        font-size: 0.8em;
+        vertical-align: super;
+        line-height: 0;
+        color: #3c9fc3;
+      }
+
+      .footnotes {
+        margin-top: 2em;
+        border-top: 1px solid #ddd;
+        padding-top: 1em;
+        font-size: 0.9em;
+      }
+
+      .footnotes ol {
+        margin-left: 1.5em;
+      }
+
+      .footnotes li {
+        margin-bottom: 0.5em;
+        position: relative;
+        padding-left: 1.5em;
+      }
+
+      .footnotes li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: #3c9fc3;
+        font-weight: bold;
+      }
+
+      .footnotes .source {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .footnotes .print-instructions {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .footnotes .print-note {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .footnotes .print-notes {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      .footnotes .print-notes {
+        font-size: 0.8em;
+        color: #666;
+        margin-top: 0.5em;
+        padding: 0.5em;
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        border-top: none;
+      }
+
+      /* Sources section styling */
+      #sources {
+        page-break-before: always;
+        margin-top: 2cm;
+      }
+
+      #sources h2 {
+        font-size: 24pt;
+        margin-bottom: 1.5cm;
+        text-align: center;
+        border-bottom: 1px solid #000;
+        padding-bottom: 0.75cm;
+      }
+
+      #sources p {
+        font-size: 12pt;
+        line-height: 1.6;
+        text-indent: 0;
+        margin-bottom: 1.5em;
+      }
+
+      #sources p:first-of-type {
+        font-size: 14pt;
+        line-height: 1.8;
+        margin-bottom: 2em;
+      }
+
+      #sources ul {
+        margin-left: 1.5cm;
+        margin-bottom: 1.5em;
+        list-style: none;
+      }
+
+      #sources li {
+        margin-bottom: 0.75em;
+        position: relative;
+        padding-left: 1.5em;
+        font-size: 12pt;
+        line-height: 1.6;
+      }
+
+      #sources li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: #3c9fc3;
+        font-weight: bold;
+      }
+
+      #sources a {
+        color: #3c9fc3;
+        text-decoration: none;
+      }
+
+      #sources a::after {
+        content: " (" attr(href) ")";
+        font-size: 10pt;
+        color: #666;
+        margin-left: 0.5em;
+      }
+
+      #sources a:hover {
+        text-decoration: underline;
+      }
+
+      #sources strong {
+        color: #3c9fc3;
+      }
+
+      #sources em {
+        font-style: italic;
+        color: #3c9fc3;
+      }
+
+      /* Conclusion section styling */
+      section:last-of-type {
+        page-break-before: always;
+        margin-top: 2cm;
+      }
+
+      section:last-of-type h2 {
+        font-size: 24pt;
+        margin-bottom: 1.5cm;
+        text-align: center;
+        border-bottom: 1px solid #000;
+        padding-bottom: 0.75cm;
+      }
+
+      section:last-of-type p {
+        text-indent: 0;
+        margin-bottom: 1.5em;
+        line-height: 1.6;
+        font-size: 12pt;
+      }
+
+      section:last-of-type p:first-of-type {
+        font-size: 14pt;
+        line-height: 1.8;
+        margin-bottom: 2em;
+      }
+
+      section:last-of-type p:last-of-type {
+        margin-bottom: 3cm;
+        font-weight: bold;
+        font-style: italic;
+        color: #666;
+      }
+
+      section:last-of-type p em {
+        font-style: italic;
+        color: #3c9fc3;
+      }
+
+      section:last-of-type strong {
+        color: #3c9fc3;
+      }
+
+      /* Introduction section styling */
+      section:first-of-type {
+        page-break-before: always;
+        margin-top: 2cm;
+      }
+
+      section:first-of-type h2 {
+        font-size: 24pt;
+        margin-bottom: 1.5cm;
+        text-align: center;
+        border-bottom: 1px solid #000;
+        padding-bottom: 0.75cm;
+      }
+
+      section:first-of-type p {
+        font-size: 14pt;
+        line-height: 1.8;
+        text-indent: 0;
+        margin-bottom: 1.5em;
+      }
+
+      section:first-of-type p:first-of-type {
+        font-size: 16pt;
+        line-height: 1.8;
+        margin-bottom: 2em;
+        font-weight: bold;
+      }
+
+      section:first-of-type p:last-of-type {
+        margin-bottom: 3cm;
+        font-style: italic;
+        color: #666;
+      }
+
+      section:first-of-type strong {
+        color: #3c9fc3;
+      }
+
+      section:first-of-type em {
+        font-style: italic;
+        color: #3c9fc3;
+      }
+
+      /* Main content section styling */
+      section {
+        page-break-before: always;
+        margin-top: 2cm;
+      }
+
+      section h2 {
+        font-size: 24pt;
+        margin-bottom: 1.5cm;
+        text-align: center;
+        border-bottom: 1px solid #000;
+        padding-bottom: 0.75cm;
+      }
+
+      section h3 {
+        font-size: 18pt;
+        margin-top: 1.5cm;
+        margin-bottom: 0.75cm;
+        color: #3c9fc3;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 0.5cm;
+      }
+
+      section p {
+        font-size: 12pt;
+        line-height: 1.6;
+        text-indent: 1.5em;
+        margin-bottom: 1em;
+      }
+
+      section p:first-of-type {
+        text-indent: 0;
+        font-size: 14pt;
+        line-height: 1.8;
+        margin-bottom: 1.5em;
+      }
+
+      section ul {
+        margin-left: 1.5cm;
+        margin-bottom: 1.5em;
+        list-style: none;
+      }
+
+      section li {
+        margin-bottom: 0.75em;
+        position: relative;
+        padding-left: 1.5em;
+        font-size: 12pt;
+        line-height: 1.6;
+      }
+
+      section li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: #3c9fc3;
+        font-weight: bold;
+      }
+
+      section strong {
+        color: #3c9fc3;
+      }
+
+      section em {
+        font-style: italic;
+        color: #3c9fc3;
+      }
+
+      section blockquote {
+        margin: 1.5em 2cm;
+        padding: 1em;
+        border-left: 4px solid #3c9fc3;
+        background: #f5f5f5;
+        font-style: italic;
+      }
+
+      section blockquote p {
+        margin: 0.5em 0;
+        text-indent: 0;
+      }
+
+      section figure {
+        margin: 1.5em 0;
+        page-break-inside: avoid;
+        text-align: center;
+      }
+
+      section figcaption {
+        font-style: italic;
+        text-align: center;
+        margin: 0.5em 0 1.5em 0;
+        font-size: 0.9em;
+        color: #666;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-container">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<div class="sticky-header">
+  <div class="header-content">
+    <h1>The Evolving Role of AI</h1>
+    <nav>
+      <a href="#generative-ai">Generative AI</a>
+      <a href="#agentic-ai">Agentic AI</a>
+      <a href="#robotics-bio">Robotics & Bio</a>
+      <a href="#future-visions">Future Visions</a>
+      <a href="#sources">Sources</a>
+      <button class="theme-toggle" title="Toggle Dark Mode">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmZmZmIj48cGF0aCBkPSJNMTIgM2MuMTMyIDAgLjI2MyAwIC4zOTQgMGE3LjUgNy41IDAgMCAwLTcuNTU0IDcuNTU0Yy4wNy43NzguMjE2IDEuNTIuNDYgMi4yMjZhNy41MDYgNy41MDYgIDAgMCAwIDYuODk0IDQuNzVjLjE3IDAgLjM0IDAgLjUxIDBhNy41IDcuNSAwIDAgMCA3LjU1NC03LjU1NCA3LjUgNy41IDAgMCAwLTcuNTU0LTcuNTU0eiIgLz48L3N2Zz4=" alt="Theme Toggle">
+      </button>
+      <button class="print-button" title="Print" onclick="window.print()">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI4IDI4IiBmaWxsPSIjZmZmZmZmIj48cGF0aCBkPSJNMTkgOEg1Yy0xLjY2IDAtMyAxLjM0LTMgM3Y2aDR2NGg4di00aDR2LTZjMC0xLjY2LTEuMzQtMy0zLTN6bS0zIDExSDh2LTVoOHY1em0zLTdjLS41NSAwLTEtLjQ1LTEtMXMuNDUtMSAxLTFzMSAuNDUgMSAxcy0uNDUgMS0xIDF6bS0xLTlINnYyaDEyVjN6Ii8+PC9zdmc+" alt="Print">
+      </button>
+      <button class="print-preview-button" title="Print Preview" onclick="window.print()">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjZmZmZmZmIj48cGF0aCBkPSJNMTkgOEg1Yy0xLjY2IDAtMyAxLjM0LTMgM3Y2aDR2NGg4di00aDR2LTZjMC0xLjY2LTEuMzQtMy0zLTN6bS0zIDExSDh2LTVoOHY1em0zLTdjLS41NSAwLTEtLjQ1LTEtMXMuNDUtMSAxLTFzMSAuNDUgMSAxcy0uNDUgMS0xIDF6bS0xLTlINnYyaDEyVjN6Ii8+PC9zdmc+" alt="Print Preview">
+      </button>
+    </nav>
+  </div>
+</div>
+
+<div class="toc">
+  <h3>Table of Contents</h3>
+  <ul>
+    <li><a href="#generative-ai">Generative AI</a></li>
+    <li><a href="#agentic-ai">Agentic AI</a></li>
+    <li><a href="#robotics-bio">Robotics & Bio-Integration</a></li>
+    <li><a href="#future-visions">Future Visions</a></li>
+    <li><a href="#sources">Sources</a></li>
+  </ul>
+</div>
+
+<header>
+  <h1>The Evolving Role of AI</h1>
+  <p>From Generative Intelligence to Agentic Systems and Beyond</p>
+</header>
+
+<div class="print-header">
+  <h1>The Evolving Role of AI</h1>
+  <div class="subtitle">From Generative Intelligence to Agentic Systems and Beyond</div>
+  <div class="author">By Evan Musick</div>
+  <div class="date">January 15, 2025</div>
+</div>
+
+<div class="print-toc">
+  <h2>Table of Contents</h2>
+  <ul>
+    <li><a href="#generative-ai">1. Generative AI</a></li>
+    <li><a href="#agentic-ai">2. Agentic AI</a></li>
+    <li><a href="#robotics-bio">3. Robotics & Biological Machine Interfacing</a></li>
+    <li><a href="#future-visions">4. Future Visions & Cross-Industry Impact</a></li>
+    <li><a href="#sources">5. Sources & Attribution</a></li>
+  </ul>
+</div>
+
+<main>
+  <!-- Intro Section -->
+  <section>
+    <p>
+      Artificial Intelligence has rapidly transformed the modern landscape, starting with the rise of 
+      <strong>Generative AI</strong> for content creation and continuing toward 
+      <strong>Agentic AI</strong> capable of decision-making. Beyond these is the exciting (and sometimes daunting) 
+      frontier of <strong>robotic systems</strong> and invasive technologies such as <em>biological machine interfacing</em>. 
+      The following report delves into short, medium, and long-term developments across these domains, exploring how AI 
+      might revolutionize industries—from healthcare to transportation, from biotechnology to manufacturing—and how APIs 
+      stand at the heart of these emerging ecosystems.
+    </p>
+  </section>
+  
+  <div class="divider"></div>
+  
+  <!-- Generative AI -->
+  <section id="generative-ai">
+    <h2>Generative AI</h2>
+    <h3>Short-Term Outlook (0–2 years)</h3>
+    <p>
+      Generative AI models for text, image, and even video creation have become increasingly sophisticated. 
+      In the short term, we can expect:
+    </p>
+    <ul>
+      <li>
+        <strong>Wider Adoption in Creative Fields</strong>: 
+        Marketing, design, and media industries will incorporate AI-based content creation, 
+        using API endpoints to rapidly generate copy, visuals, and interactive media.
+      </li>
+      <li>
+        <strong>APIs for On-Demand Creativity</strong>: 
+        Platforms like OpenAI, Stability AI, and Hugging Face will continue exposing 
+        generative model APIs, allowing businesses to integrate advanced content generation without 
+        building models from scratch.
+      </li>
+      <li>
+        <strong>Better User Controls & Customization</strong>:
+        More fine-tuned parameters, user-driven prompt engineering, and improved content moderation 
+        protocols to ensure ethical and brand-safe outputs.
+      </li>
+    </ul>
+
+    <h3>Medium-Term Outlook (2–5 years)</h3>
+    <p>
+      As generative models gain more context-awareness and refined capabilities:
+    </p>
+    <ul>
+      <li>
+        <strong>Hyper-Personalized Content</strong>: 
+        Generative AI will tap into user-specific data to produce content tailored to individual tastes, 
+        leading to more engaging marketing campaigns, adaptive learning materials, and personalized entertainment.
+      </li>
+      <li>
+        <strong>Industry-Specific “Model Hubs”</strong>:
+        Expect specialized APIs for domains like law, healthcare, or finance, providing 
+        domain-trained generative outputs that meet strict compliance standards.
+      </li>
+      <li>
+        <strong>Increased Regulation</strong>:
+        Policymakers will begin to enact guidelines for AI-generated content, 
+        focusing on authenticity, fairness, and social responsibility.
+      </li>
+    </ul>
+
+    <h3>Long-Term Outlook (5+ years)</h3>
+    <p>
+      Generative AI may evolve into foundational technology for large-scale simulations, 
+      immersive virtual realities, and multi-modal interactions:
+    </p>
+    <ul>
+      <li>
+        <strong>Multi-Modal Fusion</strong>: 
+        Text, voice, VR/AR environments, and even tactile feedback merging into integrated 
+        AI-driven experiences for education, entertainment, and professional training.
+      </li>
+      <li>
+        <strong>Societal-Level Implications</strong>: 
+        Entire industries might rely on generative AI for content production, 
+        raising questions about labor displacement, creativity, and cultural authenticity.
+      </li>
+      <li>
+        <strong>New Creative Economics</strong>:
+        Royalties, licensing, and intellectual property frameworks will have to account 
+        for AI-generated works—potentially redefining what “authorship” means.
+      </li>
+    </ul>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Agentic AI -->
+  <section id="agentic-ai">
+    <h2>Agentic AI</h2>
+    <h3>Short-Term Outlook (0–2 years)</h3>
+    <p>
+      Agentic AI goes beyond content generation to autonomously plan, execute tasks, and make decisions:
+    </p>
+    <ul>
+      <li>
+        <strong>Personalized Virtual Assistants</strong>:
+        Next-gen assistants that can proactively schedule appointments, arrange logistics, 
+        or negotiate deals on behalf of users through well-defined API integrations.
+      </li>
+      <li>
+        <strong>Context-Rich Decision-Making</strong>:
+        Agentic models tap into APIs that provide real-time data (e.g., weather, stock prices, 
+        social media trends), enabling dynamic adaptations of decisions.
+      </li>
+      <li>
+        <strong>Security & Ethical Considerations</strong>:
+        Early regulations and best practices around “AI autonomy” to avoid runaway or malicious behaviors.
+      </li>
+    </ul>
+
+    <h3>Medium-Term Outlook (2–5 years)</h3>
+    <p>
+      As agentic AI matures, it will integrate deeply with enterprise systems:
+    </p>
+    <ul>
+      <li>
+        <strong>End-to-End Process Automation</strong>:
+        Automating supply chains, procurement, and customer support from start to finish 
+        with minimal human intervention.
+      </li>
+      <li>
+        <strong>Cross-Platform Collaboration</strong>:
+        Agentic AI will orchestrate tasks across multiple services via APIs, 
+        requiring standardized communication protocols among different AI solutions.
+      </li>
+      <li>
+        <strong>Transparent and Explainable AI</strong>:
+        Businesses will demand solutions that offer clear decision trails, 
+        driving innovation in AI model interpretability and data lineage tracking.
+      </li>
+    </ul>
+
+    <h3>Long-Term Outlook (5+ years)</h3>
+    <p>
+      Over time, agentic AI might become deeply entrenched in the fabric of society:
+    </p>
+    <ul>
+      <li>
+        <strong>Virtual Governance</strong>:
+        Governments could rely on AI systems for administrative tasks, resource allocation, 
+        and policy drafting—raising questions about accountability and democratic oversight.
+      </li>
+      <li>
+        <strong>Collective Intelligence Ecosystems</strong>:
+        Agentic AI collaborating with human experts to tackle global challenges—disease outbreaks, 
+        climate change—through near-instant data synthesis and simulation-based policy recommendations.
+      </li>
+      <li>
+        <strong>Ethical & Existential Considerations</strong>:
+        The autonomy of AI in shaping human decisions prompts philosophical debates on free will, 
+        privacy, and the essence of being human.
+      </li>
+    </ul>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Robotics & Bio-Integration -->
+  <section id="robotics-bio">
+    <h2>Robotics & Biological Machine Interfacing</h2>
+    <h3>Short-Term Outlook (0–2 years)</h3>
+    <p>
+      Robotics already plays a significant role in manufacturing, logistics, and even household chores. 
+      Simultaneously, <em>biological machine interfacing</em> is making headway through wearables 
+      and early-stage neural implants:
+    </p>
+    <ul>
+      <li>
+        <strong>Refined Industrial Robots</strong>:
+        Advances in AI-driven computer vision and sensor fusion enable safer and more 
+        precise automation on factory floors.
+      </li>
+      <li>
+        <strong>Consumer Drones & Delivery Bots</strong>:
+        APIs that allow third-party applications to connect in real-time with drones and 
+        ground bots for location tracking, job orchestration, and environment mapping.
+      </li>
+      <li>
+        <strong>Early Bio-Interfaces</strong>:
+        Commercial wearables (e.g., brain-computer interface headbands) offering limited 
+        control of external devices, setting the stage for more invasive tech.
+      </li>
+    </ul>
+
+    <h3>Medium-Term Outlook (2–5 years)</h3>
+    <p>
+      Over the next few years, we can anticipate more seamless merging of robotics with living systems:
+    </p>
+    <ul>
+      <li>
+        <strong>Medical Robotics & Neuroprosthetics</strong>:
+        Highly sophisticated prosthetics controlled via neural signals, 
+        real-time AI feedback for physical therapy, and advanced telemedicine robots.
+      </li>
+      <li>
+        <strong>Exoskeletons & Assistive Technologies</strong>:
+        More individuals (from factory workers to those with mobility challenges) 
+        using exoskeletons equipped with AI-based motion prediction for less fatigue 
+        and enhanced capabilities.
+      </li>
+      <li>
+        <strong>Biological Machine Interfacing APIs</strong>:
+        Standardized APIs for bio-sensor data (EEG, EMG, etc.) 
+        allowing developers to build applications that interact directly with the human nervous system.
+      </li>
+    </ul>
+
+    <h3>Long-Term Outlook (5+ years)</h3>
+    <p>
+      In the longer horizon, biological machine interfacing could change what it means to be human:
+    </p>
+    <ul>
+      <li>
+        <strong>Neural Implants & Enhanced Cognition</strong>:
+        Technologies like advanced Brain-Computer Interfaces (BCIs) 
+        could lead to real-time data exchange with cloud-based AI, amplifying memory and learning.
+      </li>
+      <li>
+        <strong>Cyborg Transformations</strong>:
+        Permanent implants, genetic modifications via CRISPR, and synthetic organs 
+        integrated with AI for health monitoring, disease prevention, and human augmentation.
+      </li>
+      <li>
+        <strong>Regulatory & Ethical Quagmires</strong>:
+        The line between therapy and enhancement will blur, 
+        sparking intense debates over what modifications should be allowed, 
+        who controls the data, and how society values organic vs. synthetic life.
+      </li>
+    </ul>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Future Visions -->
+  <section id="future-visions">
+    <h2>Future Visions & Cross-Industry Impact</h2>
+    <p>
+      The intersecting progress of <strong>Generative AI</strong>, <strong>Agentic AI</strong>, 
+      and <strong>Robotic/Bio-Interfacing</strong> will ripple through virtually every sector:
+    </p>
+    
+    <h3>Healthcare & Biotechnology</h3>
+    <p>
+      AI-driven drug discovery, predictive diagnostics, and personalized treatment plans 
+      will become far more accessible. APIs that securely handle sensitive patient data 
+      could integrate with hospital systems, CRISPR labs, and wearable/implantable devices, 
+      ushering in a new era of preventive medicine and telemedicine. The big question: 
+      how do we protect patient privacy and maintain ethical boundaries when AI can interpret 
+      brain signals or gene edits?
+    </p>
+    
+    <h3>Manufacturing & Logistics</h3>
+    <p>
+      Agentic robots might optimize supply chains in real time, using APIs to communicate 
+      with each other and with cloud-based services for data analytics. Heavy industry could 
+      see “lights-out” factories where human intervention is minimal. 
+      This raises challenges in labor markets, regulation, and the socioeconomic shifts 
+      resulting from wide-scale automation.
+    </p>
+    
+    <h3>Transportation & Autonomous Systems</h3>
+    <p>
+      Self-driving cars, aerial drones, and maritime robots stand to benefit from advanced 
+      agentic decision-making and generative model-based simulations (e.g., synthetic data for training). 
+      Invasive biological interfaces in this domain might be more futuristic, 
+      but <em>haptic feedback implants</em> could eventually enhance driver or pilot awareness.
+    </p>
+
+    <h3>Education & Skill Development</h3>
+    <p>
+      Generative AI could offer hyper-personalized learning materials, while agentic systems 
+      tutor students through interactive dialogue. Long-term, neural implants might expedite 
+      language acquisition or vocational skills. Equity in access to these technologies 
+      will become a heated conversation—could advanced AI-based education create an even 
+      larger gap between wealthier and poorer regions?
+    </p>
+    
+    <h3>Creative Economies & Cultural Implications</h3>
+    <p>
+      As generative and agentic AI blend into everyday creative tools, we’ll see entire new 
+      genres of art, entertainment, and media. Simultaneously, definitions of “authorship” 
+      and “originality” will be challenged. Robo-musicians or “cyborg athletes” might 
+      gain prominence, pushing humanity to reconsider what constitutes talent or skill.
+    </p>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Conclusion Section -->
+  <section>
+    <h2>Conclusion</h2>
+    <p>
+      The threads of <strong>Generative AI</strong>, <strong>Agentic AI</strong>, 
+      and <strong>Robotic/Biological Interfacing</strong> are weaving together 
+      into a complex tapestry that could redefine human society. The short-term horizon 
+      focuses on efficiency and convenience, but the medium and long-term views raise 
+      deep ethical, societal, and philosophical questions. 
+    </p>
+    <p>
+      APIs remain the fundamental enablers, connecting advanced AI models to real-world applications 
+      and bridging siloed systems. As technology accelerates, developers, policymakers, 
+      and the public at large must collaborate to steer AI innovations responsibly. 
+      The journey ahead is filled with promise, peril, and profound possibilities for reinventing 
+      what it means to live, work, and thrive in an increasingly <em>augmented</em> world.
+    </p>
+  </section>
+
+  <div class="divider"></div>
+  
+  <!-- Sources Section -->
+  <section id="sources">
+    <h2>Sources & Attribution</h2>
+    <p>
+      This research compilation and website layout were prepared with the assistance of 
+      <strong>ChatGPT</strong>, a large language model developed by <em>OpenAI</em>.
+      While this document integrates insights and background from various AI literature,
+      listed below are some general references and resources that informed the topics:
+    </p>
+    <ul>
+      <li>
+        <strong>OpenAI</strong> –
+        <a href="https://openai.com" target="_blank">openai.com</a>
+      </li>
+      <li>
+        <strong>Hugging Face</strong> –
+        <a href="https://huggingface.co" target="_blank">huggingface.co</a>
+      </li>
+      <li>
+        <strong>Stability AI</strong> –
+        <a href="https://stability.ai" target="_blank">stability.ai</a>
+      </li>
+      <li>
+        <strong>State of AI Report</strong> –
+        <a href="https://www.stateof.ai/" target="_blank">www.stateof.ai</a>
+      </li>
+      <li>
+        <strong>Stanford AI Index</strong> –
+        <a href="https://hai.stanford.edu/ai-index" target="_blank">hai.stanford.edu/ai-index</a>
+      </li>
+      <li>
+        <strong>McKinsey Global Institute: AI Report</strong> –
+        <a href="https://www.mckinsey.com/featured-insights/artificial-intelligence" target="_blank">
+          mckinsey.com
+        </a>
+      </li>
+    </ul>
+    <p>
+      Additional information draws from developments in the fields of:
+    </p>
+    <ul>
+      <li>
+        Biotechnology and CRISPR research – covering advancements in gene editing 
+        and the ethical considerations therein.
+      </li>
+      <li>
+        Brain-Computer Interface (BCI) studies – exploring the progress and potential 
+        of neural implants for healthcare and beyond.
+      </li>
+      <li>
+        Robotics and automation trends – with focus on industrial transformations 
+        and the rise of agentic systems.
+      </li>
+    </ul>
+    <p>
+      If you have any questions or would like to discuss the ideas presented here in more detail, 
+      feel free to reach out. We encourage readers to explore these sources and remain engaged 
+      with the ever-evolving landscape of AI technologies.
+    </p>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2025 The Future of AI. All Rights Reserved.</p>
+  <p>Research and Compilation Supported by ChatGPT & OpenAI</p>
+</footer>
+
+  <script src="js/main.js"></script>
+
+</body>
+</html>

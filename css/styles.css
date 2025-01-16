@@ -1,0 +1,273 @@
+/* Enhanced Dark Mode */
+:root {
+  --primary-color: #3c9fc3;
+  --secondary-color: #2c3e50;
+  --text-color: #333;
+  --bg-color: #fafafa;
+  --dark-text: #e0e0e0;
+  --dark-bg: #121212;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  color: var(--text-color);
+  background: var(--bg-color);
+  padding-top: 80px;
+  scroll-behavior: smooth;
+}
+
+.sticky-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--secondary-color);
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.progress-container {
+  width: 100%;
+  height: 4px;
+  background: var(--secondary-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1001;
+}
+
+.progress-bar {
+  height: 4px;
+  background: var(--primary-color);
+  width: 0%;
+  transition: width 0.2s ease-out;
+}
+
+.sticky-header .header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5em;
+  margin-left: 1em;
+}
+
+.theme-toggle img {
+  width: 24px;
+  height: 24px;
+  filter: invert(1);
+}
+
+/* Dark mode styles */
+body.dark-mode {
+  background: var(--dark-bg);
+  color: var(--dark-text);
+}
+
+.dark-mode .toc {
+  background: #1e1e1e;
+  color: var(--dark-text);
+}
+
+.dark-mode .toc a {
+  color: var(--dark-text);
+}
+
+.dark-mode .toc a:hover {
+  color: var(--primary-color);
+}
+
+.dark-mode main {
+  background: #1e1e1e;
+  box-shadow: 0 2px 4px rgba(255,255,255,0.1);
+}
+
+.dark-mode h2,
+.dark-mode h3 {
+  color: var(--primary-color);
+}
+
+.sticky-header h1 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.sticky-header nav {
+  background: transparent;
+  padding: 0;
+}
+
+.sticky-header nav a {
+  margin: 0 0.8em;
+  font-size: 0.9em;
+  color: #fff;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.sticky-header nav a:hover {
+  opacity: 0.8;
+}
+
+.toc {
+  position: fixed;
+  left: 20px;
+  top: 120px;
+  width: 250px;
+  background: #fff;
+  padding: 1.5em;
+  border-radius: 6px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
+  z-index: 999;
+}
+
+@media (max-width: 1200px) {
+  .toc {
+    position: static;
+    width: 100%;
+    max-height: none;
+    margin: 2em 0;
+  }
+}
+
+.toc h3 {
+  margin-top: 0;
+  color: var(--primary-color);
+}
+
+.toc ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc li {
+  margin: 0.5em 0;
+}
+
+.toc a {
+  color: var(--text-color);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.toc a:hover {
+  color: var(--primary-color);
+  transform: translateX(5px);
+}
+
+header, footer {
+  background: var(--secondary-color);
+  color: #fff;
+  text-align: center;
+  padding: 2em 0;
+}
+
+nav {
+  background: var(--primary-color);
+  padding: 1em;
+  text-align: center;
+}
+
+nav a {
+  color: #fff;
+  margin: 0 1em;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+main {
+  max-width: 900px;
+  margin: 2em auto;
+  padding: 0 1em;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+section {
+  padding: 2em 2em 0 2em;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+h1 {
+  text-align: center;
+  margin-top: 0;
+  padding-top: 1em;
+  font-size: 2em;
+}
+
+h2, h3 {
+  color: var(--primary-color);
+}
+
+p {
+  margin-bottom: 1.2em;
+}
+
+.divider {
+  height: 2px;
+  background: var(--primary-color);
+  margin: 2em 0;
+  opacity: 0.6;
+}
+
+footer {
+  page-break-before: always;
+  margin-top: 2cm;
+  padding: 1cm 0;
+  border-top: 1px solid #000;
+  text-align: center;
+  font-size: 10pt;
+  color: #666;
+}
+
+footer p {
+  margin: 0.5em 0;
+}
+
+.back-to-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.back-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.back-to-top:hover {
+  background: var(--secondary-color);
+}
